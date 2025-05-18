@@ -2,8 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Category } from '../../categories/entities/category.entity';
 
 @Entity()
 export class Todo {
@@ -24,4 +27,8 @@ export class Todo {
 
   @Column({ nullable: true })
   completedAt?: Date;
+
+  @ManyToMany(() => Category, (category) => category.todos, { cascade: true })
+  @JoinTable()
+  categories: Category[];
 }
