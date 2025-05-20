@@ -1,10 +1,11 @@
 {
-  "name": "turborepo_nextjs_nestjs_starter",
+  "name": "todo_nextjs_nestjs",
   "version": "0.0.1",
   "private": false,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint --filter=!./",
     "dev:api": "turbo run dev --filter=./apps/api",
     "dev:web": "turbo run dev --filter=./apps/web"
   },
@@ -14,6 +15,6 @@
   },
   "packageManager": "pnpm@10.4.1",
   "engines": {
-    "node": ">=20"
+    "node": ">=18"
   }
 }

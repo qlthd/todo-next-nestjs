@@ -14,34 +14,37 @@ export class TodoService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+    @InjectRepository(Todo)
+    private readonly todoRepository: Repository<Todo>,
   ) {}
 
-  async create(createTodoDto: CreateTodoDto) {
-    const categories = createTodoDto.categories
-      ? await this.categoryRepository.findByIds(createTodoDto.categories)
-      : [];
+  async create(createTodoDto: CreateTodoDto): Promise<Todo> {
+    try {
+      const categories = createTodoDto.categories
+        ? await this.categoryRepository.findByIds(createTodoDto.categories)
+        : [];
 
-    const todo: Todo = {
-      id: uuidv4(),
-      title: createTodoDto.title,
-      description: createTodoDto.description,
-      categories: categories,
-      completed: false,
-      createdAt: new Date(),
-    };
-    this.todos.push(todo);
+      const todo: Todo = this.todoRepository.create({
+        id: uuidv4(),
+        title: createTodoDto.title,
+        description: createTodoDto.description,
+        categories: categories,
+        completed: false,
+        createdAt: new Date(),
+      });
+      return await this.todoRepository.save(todo);
+    } catch (error) {
+      console.error('Error creating todo:', error);
+      throw new Error('Failed to create todo');
+    }
   }
 
-  findAll(): Todo[] {
-    return this.todos;
+  async findAll(): Promise<Todo[]> {
+    return await this.todoRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} todo`;
-  }
-
-  update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+  async findOne(id: string) {
+    return this.todoRepository.findOne({ where: { id } });
   }
 
   remove(id: number) {

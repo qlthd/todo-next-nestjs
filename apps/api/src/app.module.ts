@@ -1,19 +1,22 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import {Todo} from "./todo/entities/todo.entity";
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {TodoModule} from "./todo/todo.module";
-import { CategoriesService } from './categories/categories.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TodoModule } from './todo/todo.module';
 import { CategoriesModule } from './categories/categories.module';
+import { Todo } from './todo/entities/todo.entity';
+import { Category } from './categories/entities/category.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'database.sqlite',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // don't use in prod !!
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      password: 'postgres',
+      username: 'postgres',
+      entities: [Todo, Category],
+      database: 'postgres',
+      synchronize: true,
+      logging: true,
     }),
     TodoModule,
     CategoriesModule,
