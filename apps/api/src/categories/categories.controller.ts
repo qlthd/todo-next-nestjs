@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { Category } from "./entities/category.entity";
+import { ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('categories')
 export class CategoriesController {
@@ -12,6 +14,7 @@ export class CategoriesController {
   }
 
   @Get()
+  @ApiOkResponse({ type: Category, isArray: true })
   findAll() {
     return this.categoriesService.findAll();
   }

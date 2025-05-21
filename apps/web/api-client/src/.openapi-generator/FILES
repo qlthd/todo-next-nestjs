@@ -2,6 +2,7 @@ apis/CategoriesApi.ts
 apis/TodoApi.ts
 apis/index.ts
 index.ts
+models/Category.ts
 models/Todo.ts
 models/index.ts
 runtime.ts

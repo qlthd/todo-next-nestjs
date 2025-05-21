@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { Category } from './Category';
+import {
+    CategoryFromJSON,
+    CategoryFromJSONTyped,
+    CategoryToJSON,
+    CategoryToJSONTyped,
+} from './Category';
+
 /**
  * 
  * @export
@@ -57,10 +65,10 @@ export interface Todo {
     completedAt?: Date | null;
     /**
      * 
-     * @type {Array<object>}
+     * @type {Array<Category>}
      * @memberof Todo
      */
-    categories: Array<object>;
+    categories: Array<Category>;
 }
 
 /**
@@ -92,7 +100,7 @@ export function TodoFromJSONTyped(json: any, ignoreDiscriminator: boolean): Todo
         'completed': json['completed'],
         'createdAt': (new Date(json['createdAt'])),
         'completedAt': json['completedAt'] == null ? undefined : (new Date(json['completedAt'])),
-        'categories': json['categories'],
+        'categories': ((json['categories'] as Array<any>).map(CategoryFromJSON)),
     };
 }
 
@@ -113,7 +121,7 @@ export function TodoToJSONTyped(value?: Todo | null, ignoreDiscriminator: boolea
         'completed': value['completed'],
         'createdAt': ((value['createdAt']).toISOString()),
         'completedAt': value['completedAt'] == null ? undefined : ((value['completedAt'] as any).toISOString()),
-        'categories': value['categories'],
+        'categories': ((value['categories'] as Array<any>).map(CategoryToJSON)),
     };
 }
 
